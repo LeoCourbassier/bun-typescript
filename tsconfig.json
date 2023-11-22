@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext"
+    ],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmit": true,
+    "composite": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "bun-types"
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@errors/*": [
+        "errors/*"
+      ],
+      "@apps/*": [
+        "apps/*"
+      ],
+      "@server/*": [
+        "server/*"
+      ],
+      "@health-check/*": [
+        "apps/health-check/*"
+      ],
+      "@commons/*": [
+        "commons/*"
+      ],
+    }
+  }
+}
