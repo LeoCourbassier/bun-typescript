@@ -15,11 +15,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prestart": "sh autoload.sh",
+    "autoload": "sh scripts/autoload.sh",
+    "prestart": "bun run autoload",
     "start": "bun --watch run src/index.ts",
     "lint": "eslint . --ext .ts",
-    "pretest": "sh autoload.sh",
-    "test": "bun test --coverage"
+    "pretest": "bun run autoload",
+    "test": "bun test --coverage",
+    "create:domain": "bash scripts/create.sh"
   },
   "dependencies": {
     "@bogeychan/elysia-logger": "^0.0.13",

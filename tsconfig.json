@@ -18,7 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "bun-types",
+      "bun-types"
     ],
     "baseUrl": "./src",
     "paths": {
@@ -54,7 +54,7 @@
       ],
       "@health-check/repositories/*": [
         "apps/health-check/repositories/*"
-      ],
+      ]
     }
   }
 }
