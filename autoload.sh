@@ -17,7 +17,7 @@ do
         continue
     fi
 
-    class=$(echo $content | sed -n -e 's/^.*export default class //p' | sed -n -e 's/ implements.*//p')
+    class=$(echo $content | sed -n -e 's/^.*export default class //p' | sed -n -e 's/ extends.*//p')
     echo "import ${class} from \".$file\";" >> src/autoload.ts
 
     classes+=($class)

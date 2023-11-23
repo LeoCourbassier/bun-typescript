@@ -1,9 +1,9 @@
-import HealthCheckService from "@apps/health-check/application/health.service";
-import { ApplicationController } from "@commons/controllers";
+import HealthCheckService from "@health-check/applications/health.service";
+import { ApplicationController, LoggeableContext } from "@commons/controllers";
 import { IResponse } from "@commons/responses";
-import { Context } from "elysia";
 import httpStatus from "http-status";
 import { Service } from "typedi";
+import { HealthResponses } from "@health-check/views/response/health.responses";
 
 @Service()
 export default class HealthCheckController extends ApplicationController<HealthCheckController> {
@@ -11,8 +11,15 @@ export default class HealthCheckController extends ApplicationController<HealthC
         super();
     }
 
-    getHealth = ({ set }: Context): IResponse => {
+    getHealth = ({ store, set }: LoggeableContext): IResponse => {
+        const log = this.getScoppedLogger(store);
+        log.info("Health check");
+
         set.status = httpStatus.OK;
-        return this.healthCheckService.getHealth();
+        const res = this.healthCheckService.getHealth(store);
+
+        if (!res) return HealthResponses.GetHealth.Failure();
+
+        return HealthResponses.GetHealth.Success();
     };
 }

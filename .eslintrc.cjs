@@ -4,13 +4,16 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     plugins: ["@typescript-eslint"],
     root: true,
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-        "warn", // or "error"
-        {
-            argsIgnorePattern: "^_",
-            varsIgnorePattern: "^_",
-            caughtErrorsIgnorePattern: "^_",
-        },
-    ],
+    rules: {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                argsIgnorePattern: "^_",
+                varsIgnorePattern: "^_",
+                caughtErrorsIgnorePattern: "^_",
+            },
+        ],
+        "@typescript-eslint/ban-types": "off",
+    },
 };

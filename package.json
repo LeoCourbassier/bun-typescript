@@ -22,10 +22,13 @@
     "test": "bun test --coverage"
   },
   "dependencies": {
+    "@bogeychan/elysia-logger": "^0.0.13",
+    "chalk": "^5.3.0",
+    "change-case": "^5.2.0",
     "elysia": "^0.7.29",
     "http": "^0.0.1-security",
     "http-status": "^1.7.3",
-    "pino": "^8.16.2",
+    "pino-pretty": "^10.2.3",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0"
   }

@@ -1,15 +1,16 @@
-import IRouter, { RouterToken } from "@commons/router";
+import { BuiltRouter, RouterToken } from "@commons/router";
 import { Service } from "typedi";
-import HealthCheckController from "../controllers/health.controller";
-import Elysia from "elysia";
+import HealthCheckController from "@health-check/controllers/health.controller";
+import ApplicationRouter from "@commons/router";
 
 @Service({ id: RouterToken, multiple: true })
-export default class HealthCheckRouter implements IRouter {
-    constructor(private healthCheckController: HealthCheckController) {}
+export default class HealthCheckRouter extends ApplicationRouter {
+    constructor(private healthCheckController: HealthCheckController) {
+        super();
+    }
 
-    build(): Elysia<string> {
-        console.log("Building health check router");
-        return new Elysia({ prefix: "/health" }).get(
+    build(): BuiltRouter {
+        return this.prebuild("health-check").get(
             "/",
             this.healthCheckController.getHealth
         );

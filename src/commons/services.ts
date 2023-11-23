@@ -1,11 +1,17 @@
-import { IResponse } from "./responses";
+import { kebabCase } from "change-case";
+import { Logger } from "@bogeychan/elysia-logger/types";
 
-export type IService<T> = {
-    [K in keyof T]: T[K] extends Function ? (...args: any) => IResponse : T[K];
-};
-
-export abstract class ApplicationService<T>
-    implements IService<ApplicationService<T>>
-{
+export abstract class ApplicationService {
     constructor() {}
+
+    protected getScoppedLogger = (store: Record<string, unknown>) => {
+        const name = kebabCase(this.constructor.name).replace(
+            "-service",
+            ".service"
+        );
+
+        return (<Logger>store["log"]).child({
+            name: name,
+        });
+    };
 }

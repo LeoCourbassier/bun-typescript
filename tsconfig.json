@@ -18,24 +18,42 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "bun-types"
+      "bun-types",
     ],
     "baseUrl": "./src",
     "paths": {
       "@errors/*": [
         "errors/*"
       ],
-      "@apps/*": [
-        "apps/*"
-      ],
       "@server/*": [
         "server/*"
       ],
-      "@health-check/*": [
-        "apps/health-check/*"
-      ],
       "@commons/*": [
         "commons/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@logger": [
+        "logger/logger"
+      ],
+      "@health-check/controllers/*": [
+        "apps/health-check/adapters/http/controllers/*"
+      ],
+      "@health-check/routes/*": [
+        "apps/health-check/adapters/http/routes/*"
+      ],
+      "@health-check/views/*": [
+        "apps/health-check/adapters/http/views/*"
+      ],
+      "@health-check/applications/*": [
+        "apps/health-check/applications/*"
+      ],
+      "@health-check/models/*": [
+        "apps/health-check/models/*"
+      ],
+      "@health-check/repositories/*": [
+        "apps/health-check/repositories/*"
       ],
     }
   }
