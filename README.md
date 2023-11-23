@@ -1,4 +1,5 @@
 # Bun template with TypeScript
+![Bun template](image.png)
 
 This is a template for [Bun](
     https://bun.sh/
@@ -82,3 +83,5 @@ The script will add to `tsconfig.json` automatically under `paths` as
   - [ ] Authorization
 - [ ] Add one functional domain
 - [ ] Add tests to increase coverage to 100%
+- [ ] Add Basic CI/CD
+- [ ] Add Postman collection?

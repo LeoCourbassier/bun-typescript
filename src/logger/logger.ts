@@ -83,7 +83,7 @@ export const MainLogger = createPinoLogger({
     stream,
 });
 
-export const Spawn = (name: string) =>
+export const SpawnLogger = (name: string) =>
     MainLogger.child({
         name,
     });

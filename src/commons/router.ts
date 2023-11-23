@@ -1,4 +1,4 @@
-import { Spawn } from "@logger";
+import { SpawnLogger } from "@logger";
 import { kebabCase } from "change-case";
 import { randomUUID } from "crypto";
 import Elysia, { DecoratorBase } from "elysia";
@@ -23,7 +23,7 @@ export default class ApplicationRouter implements IRouter {
             "-router",
             ".router"
         );
-        const log = Spawn(name);
+        const log = SpawnLogger(name);
 
         return new Elysia({ prefix: `/${prefix}` })
             .onBeforeHandle((ctx: ApplicationContext) => {

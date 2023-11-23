@@ -1,14 +1,14 @@
 import ApplicationRouter from "@commons/router";
 import { RouterToken } from "@commons/router";
 import { Config } from "@config";
-import { Spawn } from "@logger";
+import { SpawnLogger } from "@logger";
 import { Elysia } from "elysia";
 import Container, { Service } from "typedi";
 
 @Service()
 export class Server {
     private app: Elysia;
-    private logger = Spawn("server");
+    private logger = SpawnLogger("server");
 
     constructor() {
         this.app = new Elysia();
