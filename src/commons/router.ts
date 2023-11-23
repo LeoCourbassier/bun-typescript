@@ -1,26 +1,13 @@
 import { Spawn } from "@logger";
 import { kebabCase } from "change-case";
 import { randomUUID } from "crypto";
-import Elysia, { Context } from "elysia";
+import Elysia, { DecoratorBase } from "elysia";
 import { Token } from "typedi";
+import { ContextStore, ApplicationContext } from "./types";
 
 export const RouterToken = new Token<ApplicationRouter>("routers");
 
-export type ContextWithStore = Context & {
-    store: {
-        [key: string]: unknown;
-    };
-};
-
-export type BuiltRouter = Elysia<
-    string,
-    {
-        request: {};
-        store: {
-            [key: string]: unknown;
-        };
-    }
->;
+export type BuiltRouter = Elysia<string, DecoratorBase & ContextStore>;
 
 export interface IRouter {
     build(): BuiltRouter;
@@ -39,11 +26,11 @@ export default class ApplicationRouter implements IRouter {
         const log = Spawn(name);
 
         return new Elysia({ prefix: `/${prefix}` })
-            .onBeforeHandle((ctx: ContextWithStore) => {
+            .onBeforeHandle((ctx: ApplicationContext) => {
                 const rid = randomUUID();
                 const scoppedLog = log.child({
                     url: `${ctx.request.method} ${ctx.path}`,
-                    request_id: ctx.store["rid"],
+                    request_id: rid,
                 });
 
                 scoppedLog.info("Request received");
@@ -52,7 +39,7 @@ export default class ApplicationRouter implements IRouter {
                 ctx.store["rid"] = rid;
                 ctx.store["log"] = scoppedLog;
             })
-            .onAfterHandle((ctx: ContextWithStore) => {
+            .onAfterHandle((ctx: ApplicationContext) => {
                 const time = Date.now() - <number>ctx.store["time"];
                 log.child({
                     url: `${ctx.request.method} ${ctx.path}`,

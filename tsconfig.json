@@ -31,8 +31,8 @@
       "@commons/*": [
         "commons/*"
       ],
-      "@config/*": [
-        "config/*"
+      "@config": [
+        "config/config"
       ],
       "@logger": [
         "logger/logger"

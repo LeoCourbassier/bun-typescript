@@ -1,5 +1,6 @@
 import ApplicationRouter from "@commons/router";
 import { RouterToken } from "@commons/router";
+import { Config } from "@config";
 import { Spawn } from "@logger";
 import { Elysia } from "elysia";
 import Container, { Service } from "typedi";
@@ -20,9 +21,9 @@ export class Server {
     }
 
     public start() {
-        this.app.listen(process.env.PORT || 3000, () => {
+        this.app.listen(Config.Application.PORT, () => {
             this.logger.info(
-                `Server started on port ${process.env.PORT || 3000}`
+                `Server started on port ${Config.Application.PORT}`
             );
         });
     }

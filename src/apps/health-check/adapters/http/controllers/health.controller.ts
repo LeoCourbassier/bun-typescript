@@ -1,9 +1,10 @@
 import HealthCheckService from "@health-check/applications/health.service";
-import { ApplicationController, LoggeableContext } from "@commons/controllers";
+import { ApplicationController } from "@commons/controllers";
 import { IResponse } from "@commons/responses";
 import httpStatus from "http-status";
 import { Service } from "typedi";
 import { HealthResponses } from "@health-check/views/response/health.responses";
+import { ApplicationContext } from "@commons/types";
 
 @Service()
 export default class HealthCheckController extends ApplicationController<HealthCheckController> {
@@ -11,15 +12,18 @@ export default class HealthCheckController extends ApplicationController<HealthC
         super();
     }
 
-    getHealth = ({ store, set }: LoggeableContext): IResponse => {
+    getHealth = ({ store, set }: ApplicationContext): IResponse => {
         const log = this.getScoppedLogger(store);
         log.info("Health check");
 
-        set.status = httpStatus.OK;
         const res = this.healthCheckService.getHealth(store);
 
-        if (!res) return HealthResponses.GetHealth.Failure();
+        if (!res) {
+            set.status = httpStatus.INTERNAL_SERVER_ERROR;
+            return HealthResponses.GetHealth.Failure();
+        }
 
+        set.status = httpStatus.OK;
         return HealthResponses.GetHealth.Success();
     };
 }

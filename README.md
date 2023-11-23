@@ -22,9 +22,5 @@ $ bun start
 5. [PostgreSQL](https://www.postgresql.org/)
 6. [Redis](https://redis.io/)
 7. [TypeORM](https://typeorm.io/)
-8. [Jest](https://jestjs.io/)
 9. [Swagger](https://swagger.io/)
-10. [Express<sup>`*`</sup>](https://expressjs.com/)
-11. [Fastify<sup>`*`</sup>](https://www.fastify.io/)
-
-<sup>`*`</sup> You can choose one of them.
+10. [Elysia](https://elysiajs.com/)

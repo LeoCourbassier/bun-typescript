@@ -1,6 +1,6 @@
 import { createPinoLogger } from "@bogeychan/elysia-logger";
+import { Config } from "@config";
 import Chalk, { ChalkInstance } from "chalk";
-import { level } from "config/config";
 import httpStatus from "http-status";
 import PinoPretty from "pino-pretty";
 
@@ -26,7 +26,7 @@ const levels: Levels = {
 const stream = PinoPretty({
     colorize: true,
     sync: true,
-    ignore: "pid,hostname",
+    ignore: "pid,hostname,status,url,total_time,request_id",
     translateTime: "SYS:dd/mm/yyyy HH:MM:ss",
     customPrettifiers: {
         time: (timestamp) => Chalk.redBright(timestamp),
@@ -37,29 +37,48 @@ const stream = PinoPretty({
             );
         },
         name: (name) => Chalk.blue(name),
-        url: (request) => Chalk.yellow(request),
-        request_id: (requestId) => Chalk.yellow(requestId),
-        status: (status) => {
-            switch (httpStatus[`${status}_CLASS`]) {
-                case httpStatus.classes.SUCCESSFUL:
-                    return Chalk.greenBright(status);
-                default:
-                    return Chalk.redBright(status);
-            }
-        },
-        total_time: (totalTime) =>
-            parseInt(totalTime as string) < 2000
-                ? Chalk.greenBright(totalTime)
-                : Chalk.redBright(totalTime),
     },
-    // messageFormat: (log) => {
-    //     const { name, url, request_id, status, total_time } = log;
-    //     return `${name} ${url} ${request_id} ${status} ${total_time}`;
-    // },
+    messageFormat: (log) => buildMessage(log),
 });
 
+const totalTimePrettifier = (totalTime: unknown) =>
+    parseInt(totalTime as string) < 2000
+        ? `in ${Chalk.green(totalTime)}`
+        : `in ${Chalk.red(totalTime)}`;
+
+const statusPrettifier = (status: unknown) => {
+    switch (httpStatus[`${status}_CLASS`]) {
+        case httpStatus.classes.SUCCESSFUL:
+            return Chalk.green(status, httpStatus[`${status}_NAME`]);
+        default:
+            return Chalk.red(status, httpStatus[`${status}_NAME`]);
+    }
+};
+
+const buildMessage = (log: Record<string, unknown>) => {
+    const url = log.url ?? "";
+    const rid = log.request_id ?? "";
+    const status = log.status ?? "";
+    const total_time = log.total_time ?? "";
+    const msg = log.msg ?? "";
+
+    return [
+        { arg: url, fn: (url: unknown) => Chalk.yellow(url) },
+        { arg: status, fn: (status: unknown) => statusPrettifier(status) },
+        {
+            arg: total_time,
+            fn: (total_time: unknown) => totalTimePrettifier(total_time),
+        },
+        { arg: msg, fn: (msg: unknown) => Chalk.whiteBright(msg) },
+        { arg: rid, fn: (rid: unknown) => Chalk.grey(`[${rid}]`) },
+    ]
+        .map((field) => field.arg && field.fn(field.arg as string))
+        .filter(Boolean)
+        .join(" ");
+};
+
 export const MainLogger = createPinoLogger({
-    level: level,
+    level: Config.Logger.LEVEL,
     // @ts-expect-error T2345
     stream,
 });
