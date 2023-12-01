@@ -4,7 +4,7 @@ import { IResponse } from "@commons/responses";
 import httpStatus from "http-status";
 import { Service } from "typedi";
 import { HealthResponses } from "@health-check/views/response/health.responses";
-import { ApplicationContext } from "@commons/types";
+import { ApplicationContext } from "@commons/context";
 
 @Service()
 export default class HealthCheckController extends ApplicationController<HealthCheckController> {

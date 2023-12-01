@@ -29,3 +29,5 @@ echo "" >> src/autoload.ts
 echo "Container.import([${classes}]);" >> src/autoload.ts
 
 echo "Autoload file generated!"
+
+source scripts/entities.sh

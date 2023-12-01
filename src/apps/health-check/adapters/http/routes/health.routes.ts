@@ -9,8 +9,8 @@ export default class HealthCheckRouter extends ApplicationRouter {
         super();
     }
 
-    build(): BuiltRouter {
-        return this.prebuild("health-check").get(
+    register(): BuiltRouter {
+        return this.build("health-check").get(
             "/",
             this.healthCheckController.getHealth
         );

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { ApplicationError, InternalServerError, NotFoundError } from ".";
 
-describe("[src/errors]", () => {
+describe("Errors", () => {
     describe("ApplicationError", () => {
         it("Should be an instance of Error", () => {
             expect(new ApplicationError("test")).toBeInstanceOf(Error);

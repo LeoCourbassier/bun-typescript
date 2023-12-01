@@ -17,6 +17,7 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
     "types": [
       "bun-types"
     ],
@@ -37,6 +38,15 @@
       "@logger": [
         "logger/logger"
       ],
+      "@migrations": [
+        "db/migrations/*"
+      ],
+      "@seeds": [
+        "db/seeds/*"
+      ],
+      "@data-source": [
+        "db/data-source"
+      ],
       "@health-check/controllers/*": [
         "apps/health-check/adapters/http/controllers/*"
       ],
@@ -54,6 +64,24 @@
       ],
       "@health-check/repositories/*": [
         "apps/health-check/repositories/*"
+      ],
+      "@user/controllers/*": [
+        "apps/user/adapters/http/controllers/*"
+      ],
+      "@user/routes/*": [
+        "apps/user/adapters/http/routes/*"
+      ],
+      "@user/views/*": [
+        "apps/user/adapters/http/views/*"
+      ],
+      "@user/applications/*": [
+        "apps/user/applications/*"
+      ],
+      "@user/models/*": [
+        "apps/user/models/*"
+      ],
+      "@user/repositories/*": [
+        "apps/user/repositories/*"
       ]
     }
   }

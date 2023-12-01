@@ -3,22 +3,22 @@ import { kebabCase } from "change-case";
 import { randomUUID } from "crypto";
 import Elysia, { DecoratorBase } from "elysia";
 import { Token } from "typedi";
-import { ContextStore, ApplicationContext } from "./types";
+import { ApplicationContext } from "./context";
 
 export const RouterToken = new Token<ApplicationRouter>("routers");
 
-export type BuiltRouter = Elysia<string, DecoratorBase & ContextStore>;
+export type BuiltRouter = Elysia<string, DecoratorBase>;
 
 export interface IRouter {
-    build(): BuiltRouter;
+    register(): BuiltRouter;
 }
 
 export default class ApplicationRouter implements IRouter {
-    build(): BuiltRouter {
-        return this.prebuild("");
+    register(): BuiltRouter {
+        return this.build("");
     }
 
-    protected prebuild(prefix: string): BuiltRouter {
+    protected build(prefix: string): BuiltRouter {
         const name = kebabCase(this.constructor.name).replace(
             "-router",
             ".router"

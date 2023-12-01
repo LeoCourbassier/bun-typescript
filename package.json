@@ -21,7 +21,10 @@
     "lint": "eslint . --ext .ts",
     "pretest": "bun run autoload",
     "test": "bun test --coverage",
-    "create:domain": "bash scripts/create.sh"
+    "create:domain": "bash scripts/create.sh",
+    "typeorm": "bun run typeorm",
+    "docker:up": "docker-compose up -d --build",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
     "@bogeychan/elysia-logger": "^0.0.13",
@@ -30,8 +33,11 @@
     "elysia": "^0.7.29",
     "http": "^0.0.1-security",
     "http-status": "^1.7.3",
+    "pg": "^8.11.3",
     "pino-pretty": "^10.2.3",
     "reflect-metadata": "^0.1.13",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "typeorm": "^0.3.17",
+    "typeorm-typedi-extensions": "^0.4.1"
   }
 }

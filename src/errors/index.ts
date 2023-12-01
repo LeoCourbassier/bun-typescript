@@ -4,6 +4,7 @@ export class ApplicationError extends Error {
 
     constructor(msg: string, recoverable?: boolean, additionalInfo?: unknown) {
         super(msg);
+        this.message = `${this.constructor.name}: ${msg}`;
         this.recoverable = recoverable;
         this.additionalInfo = additionalInfo;
     }
@@ -13,6 +14,7 @@ export class ApplicationError extends Error {
     }
 }
 
+// http errors
 export class NotFoundError extends ApplicationError {}
 export class InternalServerError extends ApplicationError {}
 export class BadRequestError extends ApplicationError {}
@@ -24,3 +26,6 @@ export class TooManyRequestsError extends ApplicationError {}
 export class ServiceUnavailableError extends ApplicationError {}
 export class GatewayTimeoutError extends ApplicationError {}
 export class BadGatewayError extends ApplicationError {}
+
+// validation errors
+export class InvalidTypeError extends ApplicationError {}

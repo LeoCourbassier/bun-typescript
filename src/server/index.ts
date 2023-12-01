@@ -16,7 +16,7 @@ export class Server {
 
     public registerRoutes() {
         Container.getMany(RouterToken).forEach((router: ApplicationRouter) => {
-            this.app.use(router.build());
+            this.app.use(router.register());
         });
     }
 
