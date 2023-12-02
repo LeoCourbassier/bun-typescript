@@ -15,7 +15,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "autoload": "sh scripts/autoload.sh",
+    "autoload": "bash scripts/autoload.sh",
     "prestart": "bun run autoload",
     "start": "bun --watch run src/index.ts",
     "lint": "eslint . --ext .ts",
