@@ -1,9 +1,11 @@
-import ApplicationRouter from "@commons/router";
-import { RouterToken } from "@commons/router";
+import ApplicationRouter from "common/router";
+import { RouterToken } from "common/router";
 import { Config } from "@config";
 import { SpawnLogger } from "@logger";
 import { Elysia } from "elysia";
 import Container, { Service } from "typedi";
+import { ErrorMiddleware } from "middleware/error";
+import { AfterHandleMiddleware, RequestMiddleware } from "@middleware/request";
 
 @Service()
 export class Server {
@@ -11,7 +13,10 @@ export class Server {
     private logger = SpawnLogger("server");
 
     constructor() {
-        this.app = new Elysia();
+        this.app = new Elysia()
+            .onError(ErrorMiddleware)
+            .onRequest(RequestMiddleware(this.logger))
+            .onAfterHandle(AfterHandleMiddleware(this.logger));
     }
 
     public registerRoutes() {

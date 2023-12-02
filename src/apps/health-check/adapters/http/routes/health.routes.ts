@@ -1,7 +1,7 @@
-import { BuiltRouter, RouterToken } from "@commons/router";
+import { BuiltRouter, RouterToken } from "common/router";
 import { Service } from "typedi";
 import HealthCheckController from "@health-check/controllers/health.controller";
-import ApplicationRouter from "@commons/router";
+import ApplicationRouter from "common/router";
 
 @Service({ id: RouterToken, multiple: true })
 export default class HealthCheckRouter extends ApplicationRouter {

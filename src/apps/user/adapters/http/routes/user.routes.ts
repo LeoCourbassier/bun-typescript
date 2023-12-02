@@ -1,6 +1,6 @@
-import { BuiltRouter, RouterToken } from "@commons/router";
+import { BuiltRouter, RouterToken } from "@common/router";
 import { Service } from "typedi";
-import ApplicationRouter from "@commons/router";
+import ApplicationRouter from "@common/router";
 import UserController from "@user/controllers/user.controller";
 
 @Service({ id: RouterToken, multiple: true })

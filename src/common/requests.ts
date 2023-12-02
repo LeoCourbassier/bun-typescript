@@ -1,9 +1,12 @@
-import { InvalidTypeError } from "@errors/index";
+import { InvalidBodyError } from "@errors/index";
+import { camelize } from "utils/util";
 
 export interface IRequest {
     Required: Record<string, unknown>;
     Optional: Record<string, unknown> | undefined;
 }
+
+export type ApplicationRequests = Record<string, IRequest | null>;
 
 export type ApplicationRequestType<T extends IRequest> = T["Required"] &
     Optional<T["Optional"]>;
@@ -14,13 +17,15 @@ export type Optional<T> = {
 
 export const Class = <T>(_type: new () => T) => new _type();
 
-export abstract class ApplicationRequest {
+export abstract class ApplicationRequestParser {
     static parse = (
         body: Record<string, unknown>,
         spec: IRequest
     ): ApplicationRequestType<typeof spec> => {
-        if (!body || !spec || !spec.Required) {
-            throw new InvalidTypeError(`Body, and Spec are required`);
+        body = camelize(body);
+
+        if (!body || !spec) {
+            throw new InvalidBodyError(`Body, and Spec are required`);
         }
 
         const fullSpec: Record<string, unknown> = {
@@ -68,7 +73,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
             if (typeof body !== "string") {
                 if (optional) return null;
 
-                throw new InvalidTypeError(
+                throw new InvalidBodyError(
                     `Invalid type for spec: ${body}, wanted string`
                 );
             }
@@ -78,7 +83,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
             if (isNaN(Number(body))) {
                 if (optional) return null;
 
-                throw new InvalidTypeError(
+                throw new InvalidBodyError(
                     `Invalid type for spec: ${body}, wanted number`
                 );
             }
@@ -93,7 +98,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
             ) {
                 if (optional) return null;
 
-                throw new InvalidTypeError(
+                throw new InvalidBodyError(
                     `Invalid type for spec: ${body}, wanted boolean`
                 );
             }
@@ -106,13 +111,13 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
 
             if (optional) return null;
 
-            throw new InvalidTypeError(
+            throw new InvalidBodyError(
                 `Invalid type for spec: ${body}, wanted ${spec.name}`
             );
         default:
             if (optional) return null;
 
-            throw new InvalidTypeError(
+            throw new InvalidBodyError(
                 `Invalid type for spec: ${body}, wanted ${typeof spec}`
             );
     }

@@ -1,9 +1,10 @@
 import { Service } from "typedi";
-import { ApplicationService } from "@commons/services";
-import { Store } from "@commons/context";
+import { ApplicationService } from "common/services";
+import { Store } from "common/context";
 import { UserRepository } from "@user/repositories/user.repository";
 import { User } from "@user/models/user.model";
-import { WithoutId } from "typeorm";
+import { WithoutId } from "@common/models";
+import { NotFoundError } from "elysia";
 
 @Service()
 export default class UserService extends ApplicationService {
@@ -11,24 +12,29 @@ export default class UserService extends ApplicationService {
         super();
     }
 
-    getAll = (store: Store) => {
-        const log = this.getScoppedLogger(store);
-        log.info("Get all users");
+    getAll(store: Store): Promise<User[]> {
+        const log = this.logger(store);
+        log.debug("Getting all users");
 
         return this.userRepository.find();
-    };
+    }
 
-    getById = (store: Store, id: string) => {
-        const log = this.getScoppedLogger(store);
-        log.info("Get user by id");
+    async getById(store: Store, id: string): Promise<User> {
+        const log = this.logger(store);
+        log.debug(`Getting user by id ${id}`);
 
-        return this.userRepository.findOne(id);
-    };
+        const user = await this.userRepository.findOne(id);
+        if (!user) {
+            throw new NotFoundError("User not found");
+        }
 
-    create = (store: Store, user: WithoutId<User>) => {
-        const log = this.getScoppedLogger(store);
-        log.info("Create user");
+        return user;
+    }
+
+    create(store: Store, user: WithoutId<User>): Promise<User> {
+        const log = this.logger(store);
+        log.debug(`Creating user ${JSON.stringify(user)}`);
 
         return this.userRepository.create(user);
-    };
+    }
 }

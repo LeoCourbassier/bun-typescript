@@ -1,73 +1,78 @@
 import { describe, expect, it } from "bun:test";
-import { ApplicationRequest } from "../../../../../../commons/requests";
 import { UserRequests } from "@user/views/request/user.request";
 import { User } from "@user/models/user.model";
+import { ApplicationRequestParser } from "@common/requests";
 
 describe("UserRequest", () => {
     describe("parse", () => {
         describe("spec type is UserRequests.create", () => {
             it("should return parsed object if all fields are present", () => {
                 const body = {
-                    name: "test",
-                    email: "somemeial",
+                    first_name: "test",
+                    last_name: "somemeial",
                     age: 10,
                     idk: true,
                 };
 
                 expect(
-                    ApplicationRequest.parse(body, UserRequests.create)
-                ).toEqual(body);
+                    ApplicationRequestParser.parse(body, UserRequests.create)
+                ).toEqual({
+                    firstName: "test",
+                    lastName: "somemeial",
+                    age: 10,
+                    idk: true,
+                });
             });
 
             it("should return parsed object even if some types mismatch", () => {
                 const body = {
-                    name: "test",
-                    email: "somemeial",
+                    first_name: "test",
+                    last_name: "somemeial",
                     age: "10",
                 };
 
                 expect(
-                    ApplicationRequest.parse(body, UserRequests.create)
+                    ApplicationRequestParser.parse(body, UserRequests.create)
                 ).toEqual({
-                    name: "test",
-                    email: "somemeial",
+                    firstName: "test",
+                    lastName: "somemeial",
                     age: 10,
                 });
             });
 
             it("should not throw error if type of an optional field mismatch", () => {
                 const body = {
-                    name: "test",
-                    email: "somemeial",
+                    first_name: "test",
+                    last_name: "somemeial",
                     age: "10",
                     idk: "supercoolstring",
                 };
 
                 expect(() =>
-                    ApplicationRequest.parse(body, UserRequests.create)
+                    ApplicationRequestParser.parse(body, UserRequests.create)
                 ).not.toThrow();
             });
 
             it("should throw error if type of a required field mismatch", () => {
                 const body = {
-                    name: 10,
-                    email: "somemeial",
+                    first_name: 10,
+                    last_name: "somemeial",
                     age: "10",
                 };
 
                 expect(() =>
-                    ApplicationRequest.parse(body, UserRequests.create)
+                    ApplicationRequestParser.parse(body, UserRequests.create)
                 ).toThrow();
             });
 
             it("should throw error if a required field is not present", () => {
                 const body = {
-                    email: "somemeial",
+                    last_name: "somemeial",
                     age: "10",
                 };
 
                 expect(() =>
-                    ApplicationRequest.parse(body, UserRequests.create)
+                    ApplicationRequestParser.parse(body, UserRequests.create)
                 ).toThrow();
             });
         });
@@ -84,7 +89,7 @@ describe("UserRequest", () => {
                 };
 
                 expect(
-                    ApplicationRequest.parse(body, UserRequests.update)
+                    ApplicationRequestParser.parse(body, UserRequests.update)
                 ).toEqual({
                     user: {
                         firstName: "test",

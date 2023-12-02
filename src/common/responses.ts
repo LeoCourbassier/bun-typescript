@@ -2,7 +2,8 @@ export interface IResponse {
     message: string;
 }
 
-export type ApplicationResponse = (...params: unknown[]) => IResponse;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ApplicationResponse = (...params: any[]) => IResponse;
 
 export type ApplicationResponses = {
     [key: string]: {

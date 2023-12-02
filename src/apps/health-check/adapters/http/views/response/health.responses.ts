@@ -1,4 +1,4 @@
-import { ApplicationResponses } from "@commons/responses";
+import { ApplicationResponses } from "common/responses";
 
 export const HealthResponses: ApplicationResponses = {
     GetHealth: {

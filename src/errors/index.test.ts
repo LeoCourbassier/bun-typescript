@@ -6,16 +6,11 @@ describe("Errors", () => {
         it("Should be an instance of Error", () => {
             expect(new ApplicationError("test")).toBeInstanceOf(Error);
         });
-        it("Should have a recoverable property", () => {
-            expect(new ApplicationError("test").recoverable).toBeUndefined();
-            expect(new ApplicationError("test", true).recoverable).toBeTruthy();
-            expect(new ApplicationError("test", false).recoverable).toBeFalsy();
-        });
         it("Should have an additionalInfo property", () => {
             expect(new ApplicationError("test").additionalInfo).toBeUndefined();
-            expect(
-                new ApplicationError("test", false, "test").additionalInfo
-            ).toEqual("test");
+            expect(new ApplicationError("test", "test").additionalInfo).toEqual(
+                "test"
+            );
         });
         describe("is", () => {
             it("Should return true if error is an instance of ApplicationError", () => {
@@ -33,16 +28,11 @@ describe("Errors", () => {
         it("Should be an instance of ApplicationError", () => {
             expect(new NotFoundError("test")).toBeInstanceOf(ApplicationError);
         });
-        it("Should have a recoverable property", () => {
-            expect(new NotFoundError("test").recoverable).toBeUndefined();
-            expect(new NotFoundError("test", true).recoverable).toBeTruthy();
-            expect(new NotFoundError("test", false).recoverable).toBeFalsy();
-        });
         it("Should have an additionalInfo property", () => {
             expect(new NotFoundError("test").additionalInfo).toBeUndefined();
-            expect(
-                new NotFoundError("test", false, "test").additionalInfo
-            ).toEqual("test");
+            expect(new NotFoundError("test", "test").additionalInfo).toEqual(
+                "test"
+            );
         });
         describe("is", () => {
             it("Should return true if and only if error is instance of Derived class", () => {

@@ -4,6 +4,7 @@ import { Config, DevelopmentEnvironment } from "@config";
 import Container from "typedi";
 import { SpawnLogger } from "@logger";
 import { entities } from "./entities";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 export const DatabaseConnect = async () => {
     const ds = new DataSource({
@@ -21,6 +22,7 @@ export const DatabaseConnect = async () => {
         entities: entities,
         migrations: ["../db/migrations/*.ts"],
         subscribers: [],
+        namingStrategy: new SnakeNamingStrategy(),
     });
     await ds.initialize();
     await ds.runMigrations();

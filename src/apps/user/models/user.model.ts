@@ -1,4 +1,4 @@
-import { ApplicationModel } from "@commons/models";
+import { ApplicationModel } from "common/models";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()

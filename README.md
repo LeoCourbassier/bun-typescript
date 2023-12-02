@@ -74,14 +74,10 @@ The script will add to `tsconfig.json` automatically under `paths` as
 ```
 
 ## TODO
-- [ ] Add TypeORM migration and seed
 - [ ] Add Redis cache
 - [ ] Add Swagger
 - [ ] Add Middleware:
   - [ ] CORS
   - [ ] Authentication
   - [ ] Authorization
-- [ ] Add one functional domain
 - [ ] Add tests to increase coverage to 100%
-- [ ] Add Basic CI/CD
-- [ ] Add Postman collection?
