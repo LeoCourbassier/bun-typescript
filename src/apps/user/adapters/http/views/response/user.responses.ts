@@ -35,11 +35,32 @@ export const UserResponses: ApplicationResponses = {
             error: error.message,
         }),
     },
+    login: {
+        Success: (token: string) => ({
+            message: "Success!",
+            token,
+        }),
+        Failure: (error: ApplicationError) => ({
+            message: "Failed to login!",
+            error: error.message,
+        }),
+    },
+    me: {
+        Success: (user: User) => ({
+            message: "Success!",
+            user: sanitizeUser(user),
+        }),
+        Failure: (error: ApplicationError) => ({
+            message: "Failed to get user!",
+            error: error.message,
+        }),
+    },
 };
 
 const sanitizeUser = (user: User) =>
     snakeize({
         id: user.id,
+        email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         age: user.age,

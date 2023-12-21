@@ -28,6 +28,9 @@
   },
   "dependencies": {
     "@bogeychan/elysia-logger": "^0.0.13",
+    "@elysiajs/cookie": "^0.7.0",
+    "@elysiajs/cors": "^0.7.2",
+    "@elysiajs/jwt": "^0.7.0",
     "@types/lodash": "^4.14.202",
     "chalk": "^5.3.0",
     "elysia": "^0.7.29",
@@ -36,6 +39,7 @@
     "lodash": "^4.17.21",
     "pg": "^8.11.3",
     "pino-pretty": "^10.2.3",
+    "redis": "^4.6.12",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "typeorm": "^0.3.17",

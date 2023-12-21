@@ -1,12 +1,14 @@
 import { Service } from "typedi";
-import { ApplicationService } from "common/services";
-import { Store } from "common/context";
+import { ApplicationService } from "@common/services";
+import { Logger } from "@bogeychan/elysia-logger/types";
+import { Loggeable } from "@common/loggeable";
+import { ApplicationContext } from "@common/context";
 
 @Service()
+@Loggeable()
 export default class HealthCheckService extends ApplicationService {
-    getHealth(store: Store) {
-        const log = this.logger(store);
-        log.info("Health check");
+    getHealth(_ctx: ApplicationContext, logger?: Logger): boolean {
+        logger!.info("Health check");
 
         return true;
     }

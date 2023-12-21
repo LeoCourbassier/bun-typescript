@@ -1,29 +1,34 @@
 import HealthCheckService from "@health-check/applications/health.service";
-import { ApplicationController } from "common/controllers";
-import { IResponse } from "common/responses";
+import { ApplicationController, Views } from "@common/controllers";
+import { ApplicationResponse, IResponse } from "@common/responses";
 import httpStatus from "http-status";
 import { Service } from "typedi";
 import { HealthResponses } from "@health-check/views/response/health.responses";
-import { ApplicationContext } from "common/context";
+import { ApplicationContext } from "@common/context";
+import { Loggeable } from "@common/loggeable";
+import { HealthRequests } from "@health-check/views/request/health.requests";
 
 @Service()
+@Views(HealthRequests, HealthResponses)
+@Loggeable()
 export default class HealthCheckController extends ApplicationController<HealthCheckController> {
     constructor(private healthCheckService: HealthCheckService) {
         super();
     }
 
-    getHealth({ store, set }: ApplicationContext): IResponse {
-        const log = this.logger(store);
-        log.info("Health check");
-
-        const res = this.healthCheckService.getHealth(store);
+    getHealth(
+        ctx: ApplicationContext,
+        success: ApplicationResponse,
+        failure: ApplicationResponse
+    ): IResponse {
+        const res = this.healthCheckService.getHealth(ctx);
 
         if (!res) {
-            set.status = httpStatus.INTERNAL_SERVER_ERROR;
-            return HealthResponses.GetHealth.Failure();
+            ctx.set.status = httpStatus.INTERNAL_SERVER_ERROR;
+            return failure();
         }
 
-        set.status = httpStatus.OK;
-        return HealthResponses.GetHealth.Success();
+        ctx.set.status = httpStatus.OK;
+        return success();
     }
 }

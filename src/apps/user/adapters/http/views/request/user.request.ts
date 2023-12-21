@@ -1,5 +1,5 @@
-import { WithoutId } from "common/models";
-import { Class } from "common/requests";
+import { WithoutId } from "@common/models";
+import { Class } from "@common/requests";
 import { User } from "@user/models/user.model";
 
 export const UserRequests = {
@@ -10,10 +10,10 @@ export const UserRequests = {
             firstName: String(),
             lastName: String(),
             age: Number(),
+            email: String(),
+            password: String(),
         },
-        Optional: {
-            idk: Boolean(),
-        },
+        Optional: {},
     },
     update: {
         Required: {
@@ -21,9 +21,14 @@ export const UserRequests = {
         },
         Optional: {},
     },
+    login: {
+        Required: {
+            email: String(),
+            password: String(),
+        },
+        Optional: {},
+    },
 };
 
 export type UserCreateRequest = typeof UserRequests.create;
-export type UserUpdateRequest = typeof UserRequests.update;
-export type UserGetByIdRequest = typeof UserRequests.getById;
-export type UserGetAllRequest = typeof UserRequests.getAll;
+export type UserLoginRequest = typeof UserRequests.login;

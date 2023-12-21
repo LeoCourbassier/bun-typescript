@@ -1,3 +1,6 @@
+[![Bun CI](https://github.com/CBSRdev/bun-typescript/actions/workflows/main.yml/badge.svg)](https://github.com/CBSRdev/bun-typescript/actions/workflows/main.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Bun template with TypeScript
 ![Bun template](image.png)
 
@@ -34,7 +37,6 @@ The script will add to `tsconfig.json` automatically under `paths` as
 5. [PostgreSQL](https://www.postgresql.org/)
 6. [Redis](https://redis.io/)
 7. [TypeORM](https://typeorm.io/)
-9. [Swagger](https://swagger.io/)
 10. [Elysia](https://elysiajs.com/)
 
 ## Structure
@@ -74,10 +76,4 @@ The script will add to `tsconfig.json` automatically under `paths` as
 ```
 
 ## TODO
-- [ ] Add Redis cache
-- [ ] Add Swagger
-- [ ] Add Middleware:
-  - [ ] CORS
-  - [ ] Authentication
-  - [ ] Authorization
 - [ ] Add tests to increase coverage to 100%

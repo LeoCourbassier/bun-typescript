@@ -1,19 +1,43 @@
 import { Logger } from "@bogeychan/elysia-logger/types";
-import { Bindable } from "./bindable";
 import { kebabCase } from "lodash";
+import { ApplicationContext } from "./context";
 
-export abstract class Loggeable extends Bindable {
-    protected logger(store: Record<string, unknown>): Logger {
-        const kebab = kebabCase(this.constructor.name);
+const scopedLogger = (store: Record<string, unknown>, name: string): Logger => {
+    const kebab = kebabCase(name);
         const suffix = kebab.split("-").pop();
 
-        const name = kebabCase(this.constructor.name).replace(
+        const newName = kebabCase(name).replace(
             `-${suffix}`,
             `.${suffix}`
         );
 
         return (<Logger>store["log"]).child({
-            name: name,
+            name: newName,
         });
-    }
 }
+
+export const Loggeable = () => {
+    return (target: Function) => {
+        const descriptors = Object.getOwnPropertyDescriptors(target.prototype);
+        for (const [propName, descriptor] of Object.entries(descriptors)) {
+            const isMethod =
+                typeof descriptor.value == "function" &&
+                propName != "constructor";
+            if (!isMethod) continue;
+
+            const originalMethod = descriptor.value;
+            descriptor.value = function (...args: unknown[]) {
+                const ctx = args[0] as ApplicationContext;
+
+                const log = scopedLogger(ctx.store, target.prototype.constructor.name);
+
+                return originalMethod.apply(this, [
+                    ...args,
+                    log
+                ]);
+            };
+
+            Object.defineProperty(target.prototype, propName, descriptor);
+        }
+    };
+};

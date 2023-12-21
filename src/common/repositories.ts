@@ -1,12 +1,12 @@
 import { DataSource, Repository } from "typeorm";
-import { Loggeable } from "./loggeable";
 import { Service } from "typedi";
 import { ApplicationModel } from "./models";
+import { Bindable } from "./bindable";
 
 @Service()
 export abstract class RepositoryBase<
     T extends ApplicationModel
-> extends Loggeable {
+> extends Bindable {
     repository!: Repository<T>;
 
     constructor(dataSource: DataSource, model: Constructor<T>) {

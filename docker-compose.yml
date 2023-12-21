@@ -11,8 +11,18 @@ services:
       - ./docker/db:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
+  
+  redis:
+    image: redis
+    restart: always
+    command: redis-server --requirepass password
+    ports:
+      - 6379:6379
 
   web:
     build: .
+    depends_on:
+      - db
+      - redis
     ports:
       - 1234:1234

@@ -1,3 +1,5 @@
-import { Loggeable } from "./loggeable";
+import { Bindable } from "./bindable";
 
-export abstract class ApplicationService extends Loggeable {}
+export abstract class ApplicationService extends Bindable {
+
+}

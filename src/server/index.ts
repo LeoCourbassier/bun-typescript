@@ -1,11 +1,14 @@
-import ApplicationRouter from "common/router";
-import { RouterToken } from "common/router";
+import ApplicationRouter from "@common/router";
+import { RouterToken } from "@common/router";
 import { Config } from "@config";
 import { SpawnLogger } from "@logger";
 import { Elysia } from "elysia";
 import Container, { Service } from "typedi";
 import { ErrorMiddleware } from "middleware/error";
 import { AfterHandleMiddleware, RequestMiddleware } from "@middleware/request";
+import cors from "@elysiajs/cors";
+import jwt from "@elysiajs/jwt";
+import cookie from "@elysiajs/cookie";
 
 @Service()
 export class Server {
@@ -14,6 +17,9 @@ export class Server {
 
     constructor() {
         this.app = new Elysia()
+            .use(cors())
+            .use(jwt({ secret: Config.Application.JWT_TOKEN }))
+            .use(cookie())
             .onError(ErrorMiddleware)
             .onRequest(RequestMiddleware(this.logger))
             .onAfterHandle(AfterHandleMiddleware(this.logger));

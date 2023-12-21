@@ -14,6 +14,7 @@ export const RequestMiddleware = (logger: Logger) => (ctx: RequestContext) => {
 
     ctx.store["time"] = Date.now();
     ctx.store["rid"] = rid;
+    ctx.set.headers["X-Request-ID"] = rid;
     ctx.store["log"] = scoppedLog;
 };
 

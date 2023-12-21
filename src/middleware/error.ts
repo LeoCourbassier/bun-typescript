@@ -27,7 +27,15 @@ export const ErrorMiddleware = ({
             name,
         });
 
-    logger.error(`Error: ${error.message}`, error);
+    logger.error(`Error: ${error.message} => ${error}`);
+
+    // Route not found
+    if (error.message === "NOT_FOUND") {
+        set.status = httpStatus.NOT_FOUND;
+        return {
+            message: "Not Found",
+        };
+    }
 
     if (error instanceof ApplicationError) {
         set.status = error.code;
@@ -36,15 +44,8 @@ export const ErrorMiddleware = ({
         };
     }
 
-    if (error.name !== "SyntaxError") {
-        set.status = httpStatus.INTERNAL_SERVER_ERROR;
-        return {
-            message: "Internal Server Error",
-        };
-    }
-
-    set.status = httpStatus.UNPROCESSABLE_ENTITY;
+    set.status = httpStatus.BAD_REQUEST;
     return {
-        message: "Unprocessable Entity",
+        message: "Bad Request",
     };
 };

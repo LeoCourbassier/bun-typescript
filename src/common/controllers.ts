@@ -4,18 +4,20 @@ import {
     IResponse,
 } from "./responses";
 import { ApplicationContext } from "./context";
-import { Loggeable } from "./loggeable";
 import {
     ApplicationRequestParser,
     ApplicationRequestType,
     ApplicationRequests,
 } from "./requests";
+import { Bindable } from "./bindable";
+import { Logger } from "@bogeychan/elysia-logger/types";
 
 export type ControllerMethod = (
     ctx: ApplicationContext,
     success: ApplicationResponse,
     failure: ApplicationResponse,
-    body?: ApplicationRequestType<never>
+    body: ApplicationRequestType<never>,
+    logger: Logger
 ) => IResponse | Promise<IResponse>;
 
 export type IController<T> = {
@@ -24,7 +26,7 @@ export type IController<T> = {
 
 export abstract class ApplicationController<
     T extends IController<T>
-> extends Loggeable {}
+> extends Bindable {}
 
 export const Views = (
     requests: ApplicationRequests,
@@ -40,7 +42,6 @@ export const Views = (
 
             const spec = requests[propName];
             const views = responses[propName];
-            if (!views) continue;
 
             const originalMethod = descriptor.value;
             descriptor.value = function (...args: unknown[]) {
@@ -55,9 +56,9 @@ export const Views = (
 
                 return originalMethod.apply(this, [
                     ...args,
-                    views.Success,
-                    views.Failure,
-                    parsedBody,
+                    views?.Success || {},
+                    views?.Failure || {},
+                    parsedBody || {},
                 ]);
             };
 

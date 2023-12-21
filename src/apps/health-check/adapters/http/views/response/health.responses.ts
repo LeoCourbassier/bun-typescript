@@ -1,7 +1,7 @@
-import { ApplicationResponses } from "common/responses";
+import { ApplicationResponses } from "@common/responses";
 
 export const HealthResponses: ApplicationResponses = {
-    GetHealth: {
+    getHealth: {
         Success: () => ({
             message: "Hello World!",
         }),

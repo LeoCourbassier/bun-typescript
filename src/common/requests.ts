@@ -39,7 +39,7 @@ export abstract class ApplicationRequestParser {
             const value = body[key];
             const type = fullSpec[key];
 
-            const v = tryParse<typeof type>(value, type);
+            const v = tryParse<typeof type>(key, value, type);
             if (v) parsedBody[key] = v;
         }
 
@@ -47,7 +47,7 @@ export abstract class ApplicationRequestParser {
             const value = body[key];
             const type = fullSpec[key];
 
-            const v = tryParse<typeof type>(value, type, true);
+            const v = tryParse<typeof type>(key, value, type, true);
             if (v) parsedBody[key] = v;
         }
 
@@ -55,7 +55,12 @@ export abstract class ApplicationRequestParser {
     };
 }
 
-const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
+const tryParse = <T>(
+    key: string,
+    body: T,
+    spec: T,
+    optional = false
+): T | null => {
     const parsedBody: Record<string, unknown> = {};
 
     switch (typeof spec) {
@@ -64,7 +69,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
                 const value = (<Record<string, unknown>>body)[key];
                 const type = (<Record<string, unknown>>spec)[key];
 
-                const v = tryParse<typeof type>(value, type, optional);
+                const v = tryParse<typeof type>(key, value, type, optional);
                 if (v) parsedBody[key] = v;
             }
 
@@ -74,7 +79,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
                 if (optional) return null;
 
                 throw new InvalidBodyError(
-                    `Invalid type for spec: ${body}, wanted string`
+                    `Invalid type for spec: ${key}, wanted string`
                 );
             }
 
@@ -84,7 +89,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
                 if (optional) return null;
 
                 throw new InvalidBodyError(
-                    `Invalid type for spec: ${body}, wanted number`
+                    `Invalid type for spec: ${key}, wanted number`
                 );
             }
 
@@ -99,7 +104,7 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
                 if (optional) return null;
 
                 throw new InvalidBodyError(
-                    `Invalid type for spec: ${body}, wanted boolean`
+                    `Invalid type for spec: ${key}, wanted boolean`
                 );
             }
 
@@ -112,13 +117,13 @@ const tryParse = <T>(body: T, spec: T, optional = false): T | null => {
             if (optional) return null;
 
             throw new InvalidBodyError(
-                `Invalid type for spec: ${body}, wanted ${spec.name}`
+                `Invalid type for spec: ${key}, wanted ${spec.name}`
             );
         default:
             if (optional) return null;
 
             throw new InvalidBodyError(
-                `Invalid type for spec: ${body}, wanted ${typeof spec}`
+                `Invalid type for spec: ${key}, wanted ${typeof spec}`
             );
     }
 };

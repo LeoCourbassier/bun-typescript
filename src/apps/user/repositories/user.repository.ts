@@ -1,5 +1,5 @@
-import { AtLeastId, WithoutId } from "common/models";
-import { ApplicationRepository } from "common/repositories";
+import { AtLeastId, WithoutId } from "@common/models";
+import { ApplicationRepository } from "@common/repositories";
 import { NotFoundError } from "@errors/index";
 import { User } from "@user/models/user.model";
 import { Service } from "typedi";
@@ -13,6 +13,12 @@ export class UserRepository extends ApplicationRepository(User) {
     findOne(id: string): Promise<User | null> {
         return this.repository.findOneBy({
             id,
+        });
+    }
+
+    findByEmail(email: string): Promise<User | null> {
+        return this.repository.findOneBy({
+            email,
         });
     }
 
